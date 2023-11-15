@@ -1,47 +1,28 @@
-# Starter pipeline
-# Start with a minimal pipeline that you can customize to build and deploy your code.
-# Add steps that build, run tests, deploy, and more:
-# https://aka.ms/yaml
-
-trigger:
-- main
-
-pool:
-  vmImage: ubuntu-latest
-
-steps:
-- script: echo Hello, world!
-  displayName: 'Run a one-line script'
-
-- script: |
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
-  displayName: 'Run a multi-line script'
-name: Build-Pipeline
-
-on:
-  push:
-    branches:
-      - main
-
-jobs:
-  build:
-    runs-on: ubuntu-latest
-
+stages:
+- stage: Build
+  jobs:
+  - job: BuildJob
+    pool:
+      vmImage: 'ubuntu-latest'
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v2
+    - script: echo 'Compiling the source code and generating artifacts.'
+      displayName: 'Build Step'
 
-    - name: Setup Node.js
-      uses: actions/setup-node@v2
-      with:
-        node-version: '14'
+- stage: Test
+  jobs:
+  - job: TestJob
+    pool:
+      vmImage: 'ubuntu-latest'
+    steps:
+    - script: echo 'Running unit tests and code quality checks.'
+      displayName: 'Test Step'
 
-    - name: Install dependencies
-      run: npm install
+- stage: Deploy
+  jobs:
+  - job: DeployJob
+    pool:
+      vmImage: 'ubuntu-latest'
+    steps:
+    - script: echo 'Deploying the application to a staging environment.'
+      displayName: 'Deployment Step'
 
-    - name: Build
-      run: npm run build
-
-    - name: Test
-      run: npm test
